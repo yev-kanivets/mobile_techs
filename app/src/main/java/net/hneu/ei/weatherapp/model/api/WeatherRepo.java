@@ -1,4 +1,4 @@
-package net.hneu.ei.weatherapp.model;
+package net.hneu.ei.weatherapp.model.api;
 
 import net.hneu.ei.weatherapp.entity.WeatherResponse;
 

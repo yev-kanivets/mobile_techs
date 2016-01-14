@@ -1,6 +1,8 @@
 package net.hneu.ei.weatherapp.model;
 
 import net.hneu.ei.weatherapp.entity.WeatherResponse;
+import net.hneu.ei.weatherapp.model.api.WeatherRepo;
+import net.hneu.ei.weatherapp.model.mock.MockWeatherRepo;
 
 import org.junit.Test;
 
