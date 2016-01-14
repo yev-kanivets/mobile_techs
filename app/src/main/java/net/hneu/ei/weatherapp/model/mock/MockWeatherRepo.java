@@ -1,8 +1,9 @@
-package net.hneu.ei.weatherapp.model;
+package net.hneu.ei.weatherapp.model.mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.hneu.ei.weatherapp.entity.WeatherResponse;
+import net.hneu.ei.weatherapp.model.api.WeatherRepo;
 
 import java.io.IOException;
 
