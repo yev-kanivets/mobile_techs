@@ -7,13 +7,17 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Window;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import net.hneu.ei.weatherapp.adapters.RecyclerViewWeatherAdapter;
+import net.hneu.ei.weatherapp.decoration.DividerItemDecoration;
+import net.hneu.ei.weatherapp.entity.WeatherResponse;
+import net.hneu.ei.weatherapp.model.api.WeatherRepo;
+import net.hneu.ei.weatherapp.model.mock.MockWeatherRepoProvider;
 
 public class MainActivity extends AppCompatActivity implements TextWatcher {
 
-    private TextView mTvSearch;
+    private EditText mTvSearch;
     private RecyclerView mRecyclerViewWeather;
     private RecyclerViewWeatherAdapter mRecyclerViewWeatherAdapter;
 
@@ -25,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
         setContentView(R.layout.activity_main);
 
         //Получаем ссылки на объекты элементов экрана
-        mTvSearch = (TextView) findViewById(R.id.tvSearch);
+        mTvSearch = (EditText) findViewById(R.id.edtSearch);
         mRecyclerViewWeather = (RecyclerView) findViewById(R.id.recyclerViewWeather);
 
         //Устанавливаем слушатель изменения текста для поля поиска
@@ -38,9 +42,19 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerViewWeather.setLayoutManager(layoutManager);
 
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
+        mRecyclerViewWeather.addItemDecoration(itemDecoration);
+
         //Получаем данные из БД и если есть выход в интернет асинхронно загружаем актуальные данные
-        //mAdapter = new MyAdapter(myDataset);
-        //mRecyclerViewWeather.setAdapter(mAdapter);
+        MockWeatherRepoProvider mockWeatherRepoProvider = new MockWeatherRepoProvider();
+        mockWeatherRepoProvider.getRepo().fetchWeather("Kharkiv", new WeatherRepo.WeatherCallback() {
+            @Override
+            public void done(WeatherResponse weatherResponse) {
+                mRecyclerViewWeatherAdapter = new RecyclerViewWeatherAdapter(weatherResponse.getWeatherEntries());
+                mRecyclerViewWeather.setAdapter(mRecyclerViewWeatherAdapter);
+            }
+        });
+
     }
 
     @Override

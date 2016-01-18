@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:id="@+id/itemContent"
+    android:background="@drawable/item_recycler_view_state">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="14dp"
+        android:text="New Text"
+        android:id="@+id/tvDate"
+        android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="left|center"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/tvTemp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="right|center"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/tvMain" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginBottom="5dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:layout_width="match_parent"
+        android:gravity="left|center"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/tvTempMax" />
+
+    <TextView
+        android:layout_marginBottom="5dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:layout_width="match_parent"
+        android:gravity="left|center"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/tvTempMin" />
+
+    <TextView
+        android:layout_marginBottom="5dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/tvDescription"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>
