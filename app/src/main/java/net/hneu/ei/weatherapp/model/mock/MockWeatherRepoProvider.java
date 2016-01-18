@@ -10,6 +10,7 @@ import net.hneu.ei.weatherapp.model.api.WeatherRepoProvider;
  * @author Evgenii Kanivets
  */
 public class MockWeatherRepoProvider implements WeatherRepoProvider {
+
     @Override
     public WeatherRepo getRepo() {
         return new MockWeatherRepo();
