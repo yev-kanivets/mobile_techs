@@ -25,10 +25,8 @@ public class DatabaseHelper extends SQLiteOpenHelper implements BaseColumns {
     private static final String COL_CITY = "city_name";
     private static final String COL_RESPONSE = "response";
 
-    private Context m_context;
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        m_context = context;
     }
 
     @Override
