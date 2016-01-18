@@ -11,15 +11,17 @@ import android.widget.EditText;
 
 import net.hneu.ei.weatherapp.adapters.RecyclerViewWeatherAdapter;
 import net.hneu.ei.weatherapp.decoration.DividerItemDecoration;
+import net.hneu.ei.weatherapp.entity.WeatherEntry;
 import net.hneu.ei.weatherapp.entity.WeatherResponse;
 import net.hneu.ei.weatherapp.model.api.WeatherRepo;
 import net.hneu.ei.weatherapp.model.mock.MockWeatherRepoProvider;
 
 public class MainActivity extends AppCompatActivity implements TextWatcher {
-
     private EditText mTvSearch;
     private RecyclerView mRecyclerViewWeather;
     private RecyclerViewWeatherAdapter mRecyclerViewWeatherAdapter;
+
+    private WeatherEntry[] weatherEntries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
         mockWeatherRepoProvider.getRepo().fetchWeather("Kharkiv", new WeatherRepo.WeatherCallback() {
             @Override
             public void done(WeatherResponse weatherResponse) {
-                mRecyclerViewWeatherAdapter = new RecyclerViewWeatherAdapter(weatherResponse.getWeatherEntries());
+                weatherEntries = weatherResponse.getWeatherEntries();
+                mRecyclerViewWeatherAdapter = new RecyclerViewWeatherAdapter(weatherEntries);
                 mRecyclerViewWeather.setAdapter(mRecyclerViewWeatherAdapter);
             }
         });
