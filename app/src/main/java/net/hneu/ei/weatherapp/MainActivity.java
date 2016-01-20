@@ -4,20 +4,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import net.hneu.ei.weatherapp.adapters.RecyclerViewWeatherAdapter;
 import net.hneu.ei.weatherapp.decoration.DividerItemDecoration;
 import net.hneu.ei.weatherapp.entity.WeatherEntry;
 import net.hneu.ei.weatherapp.entity.WeatherResponse;
+import net.hneu.ei.weatherapp.model.GeneralWeatherRepoProvider;
 import net.hneu.ei.weatherapp.model.api.WeatherRepo;
-import net.hneu.ei.weatherapp.model.mock.MockWeatherRepoProvider;
+import net.hneu.ei.weatherapp.model.api.WeatherRepoProvider;
 
-public class MainActivity extends AppCompatActivity implements TextWatcher {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText mTvSearch;
+    private Button mBtnSearch;
     private RecyclerView mRecyclerViewWeather;
     private RecyclerViewWeatherAdapter mRecyclerViewWeatherAdapter;
 
@@ -32,10 +35,9 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
 
         //Получаем ссылки на объекты элементов экрана
         mTvSearch = (EditText) findViewById(R.id.edtSearch);
+        mBtnSearch = (Button) findViewById(R.id.btnSearch);
+        mBtnSearch.setOnClickListener(this);
         mRecyclerViewWeather = (RecyclerView) findViewById(R.id.recyclerViewWeather);
-
-        //Устанавливаем слушатель изменения текста для поля поиска
-        mTvSearch.addTextChangedListener(this);
 
         //Устанавливаем флаг, который говорит о том, что наш RecyclerView не будет меняться в размере, что улучшает производительность
         mRecyclerViewWeather.setHasFixedSize(true);
@@ -46,32 +48,46 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
 
         DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
         mRecyclerViewWeather.addItemDecoration(itemDecoration);
+    }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnSearch:
+                String strSearch = mTvSearch.getText().toString();
+                if(strSearch.length()>0){
+                    strSearch = strSearch.toLowerCase();
+                    doSearch(strSearch);
+                } else {
+                    Toast.makeText(this, R.string.toast_enter_name_of_the_city_for_search, Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
+    private void doSearch(final String strSearch){
         //Получаем данные из БД и если есть выход в интернет асинхронно загружаем актуальные данные
-        MockWeatherRepoProvider mockWeatherRepoProvider = new MockWeatherRepoProvider();
-        mockWeatherRepoProvider.getRepo().fetchWeather("Kharkiv", new WeatherRepo.WeatherCallback() {
+        final WeatherRepoProvider weatherRepoProvider = new GeneralWeatherRepoProvider();
+        WeatherApp.checkInternetCon(new WeatherApp.InternetStateCallback() {
             @Override
-            public void done(WeatherResponse weatherResponse) {
-                weatherEntries = weatherResponse.getWeatherEntries();
-                mRecyclerViewWeatherAdapter = new RecyclerViewWeatherAdapter(weatherEntries);
-                mRecyclerViewWeather.setAdapter(mRecyclerViewWeatherAdapter);
+            public void isInternetEnable(boolean result) {
+                weatherRepoProvider.getRepo(result).fetchWeather(strSearch, new WeatherRepo.WeatherCallback() {
+                            @Override
+                            public void done(WeatherResponse weatherResponse) {
+                                if (weatherResponse != null) {
+                                    weatherEntries = weatherResponse.getWeatherEntries();
+                                    mRecyclerViewWeatherAdapter = new RecyclerViewWeatherAdapter(weatherEntries);
+                                    mRecyclerViewWeather.setAdapter(mRecyclerViewWeatherAdapter);
+                                } else {
+                                    weatherEntries = new WeatherEntry[]{};
+                                    mRecyclerViewWeatherAdapter = new RecyclerViewWeatherAdapter(weatherEntries);
+                                    mRecyclerViewWeather.setAdapter(mRecyclerViewWeatherAdapter);
+                                }
+                            }
+                        },
+                        MainActivity.this);
             }
-        });
-
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        //При изменении текста в поле поиска осуществляем поиск
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
+        }, MainActivity.this);
     }
 }

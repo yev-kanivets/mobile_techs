@@ -5,4 +5,5 @@
     <string name="pressure">Pressure: %1$s</string>
     <string name="humidity">Humidity: %1$s</string>
     <string name="wind">Wind: %1$sm/s, %2$s°</string>
+    <string name="toast_enter_name_of_the_city_for_search">Введите название города для поиска</string>
 </resources>
