@@ -22,8 +22,7 @@ public class MockWeatherRepo implements WeatherRepo {
     @Override
     public void fetchWeather(String query, WeatherCallback callback, Context context) {
         String json = "";
-        if(WeatherApp.isInternetEnabled()) {
-            json = "{\"city\":{\"id\":706483,\"name\":\"Kharkiv\",\"coord\":{\"lon\":36.25,"
+        json = "{\"city\":{\"id\":706483,\"name\":\"Kharkiv\",\"coord\":{\"lon\":36.25,"
                     + "\"lat\":50},\"country\":\"UA\",\"population\":0,\"sys\":{\"population\":0}},"
                     + "\"cod\":\"200\",\"message\":0.0104,\"cnt\":40,\"list\":[{\"dt\":1452783600,"
                     + "\"main\":{\"temp\":1.2,\"temp_min\":-1.35,\"temp_max\":1.2,\"pressure\":1000.35,"
@@ -36,10 +35,6 @@ public class MockWeatherRepo implements WeatherRepo {
                     + "\"temp_kf\":2.41},\"weather\":[{\"id\":600,\"main\":\"Snow\",\"description\":"
                     + "\"light snow\",\"icon\":\"13n\"}],\"clouds\":{\"all\":56},\"wind\":{\"speed\":4.11,"
                     + "\"deg\":300.005},\"snow\":{\"3h\":0.1635},\"sys\":{\"pod\":\"n\"},\"dt_txt\":\"2016-01-14 18:00:00\"}]}";
-        } else {
-            DatabaseHelper databaseHelper = new DatabaseHelper(context);
-            json = databaseHelper.getWeatherResponse(query);
-        }
 
         ObjectMapper objectMapper = new ObjectMapper();
         WeatherResponse weatherResponse = null;

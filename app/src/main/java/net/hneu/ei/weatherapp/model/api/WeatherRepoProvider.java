@@ -7,5 +7,5 @@ package net.hneu.ei.weatherapp.model.api;
  * @author Evgenii Kanivets
  */
 public interface WeatherRepoProvider {
-    WeatherRepo getRepo();
+    WeatherRepo getRepo(boolean isInternetEnable);
 }

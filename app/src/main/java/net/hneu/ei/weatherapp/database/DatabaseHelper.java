@@ -44,18 +44,18 @@ public class DatabaseHelper extends SQLiteOpenHelper implements BaseColumns {
         onCreate(db);
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////Exercises
-    public void addWeatherResponse(String strCityName, WeatherResponse weatherResponse) {
+    public void addWeatherResponse(String strCityName, String response) {
         String strWR = getWeatherResponse(strCityName);
         if(strWR==null) {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(COL_CITY, strCityName);
-            values.put(COL_RESPONSE, weatherResponse.toString());
+            values.put(COL_RESPONSE, response);
 
             db.insert(TABLE_WEATHER, null, values);
             db.close();
         } else {
-            updateWeatherResponseByCity(strCityName, weatherResponse);
+            updateWeatherResponseByCity(strCityName, response);
         }
     }
 
@@ -81,13 +81,13 @@ public class DatabaseHelper extends SQLiteOpenHelper implements BaseColumns {
         return strWeatherResponse;
     }
 
-    private void updateWeatherResponseByCity(String strCityName, WeatherResponse weatherResponse) {
+    private void updateWeatherResponseByCity(String strCityName, String response) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String updateQuery = "UPDATE " + TABLE_WEATHER
                 + " SET "
-                + COL_RESPONSE + " = \"" + weatherResponse.toString()
-                + "\" WHERE " + COL_CITY + " = \"" + strCityName + "\";";
+                + COL_RESPONSE + " = \'" + response
+                + "\' WHERE " + COL_CITY + " = \"" + strCityName + "\";";
         db.execSQL(updateQuery);
 
         db.close();
